@@ -10,15 +10,14 @@ SELECT
    gv$sql.sql_id,
    gv$sql.module,
    program,
-   substr(sql_text,1,50) text,
+   resource_consumer_group,
    substr(program,length(program)-5,6) program,
    decode(state,'WAITING',event,'NOT WAITING') event,
-   decode(state,'WAITING',to_char(seconds_in_wait),'NOT WAITING') seconds_in_wait
+   decode(state,'WAITING',to_char(seconds_in_wait),'NOT WAITING') seconds_in_wait,
+   substr(sql_text,1,50) text
 FROM gv$session,gv$sql
 WHERE gv$session.sql_id=gv$sql.sql_id(+)
 and gv$session.inst_id=gv$sql.inst_id(+)
 and gv$session.username is not null
 ORDER BY status,username,machine
 /
-
-s
